@@ -53,7 +53,7 @@ void kernel test_kernel(__constant float* filter,
 }
 
 The example command line will be 
-CnnForward.exe -dim 1 -gx 4194304 -gy 1 -lx 64 -ly 1  -f 3 -c1 2048 -c2 3 
+CNNBench.exe -dim 1 -gx 4194304 -gy 1 -lx 64 -ly 1  -f 3 -c1 2048 -c2 3 
 
 
 -dim 1        :  1D buffer
