@@ -922,11 +922,16 @@ main(int argc, char * argv[]) {
 
 
 #if 0
+ssh - keygen - t rsa - C "your_email@youremail.com"
+ssh - T git@github.com
+$ git config --global user.name "your name"
+02.$ git config --global user.email "your_email@youremail.com"
+
 echo "# CNNKernelPerfTest" >> README.md
 git init
 git add README.md
-git commit - m "first commit"
-git remote add origin https ://github.com/fsword73/CNNKernelPerfTest.git
-git push - u origin master
+git commit -m "first commit"
+git remote add origin https://github.com/fsword73/CNNKernelPerfTest.git
+git push -u origin master
 
 #endif 
