@@ -80,11 +80,11 @@ int CNNBench::initialize()
 	Option* filtersize_option = new Option;
 	CHECK_ALLOCATION(filtersize_option, "Memory allocation error.\n");
 
-	height_option->_sVersion = "f";
-	height_option->_lVersion = "filterSize";
-	height_option->_description = "filterSize of the input";
-	height_option->_type = CA_ARG_INT;
-	height_option->_value = &filterSize;
+	filtersize_option->_sVersion = "f";
+	filtersize_option->_lVersion = "filterSize";
+	filtersize_option->_description = "filterSize of the input";
+	filtersize_option->_type = CA_ARG_INT;
+	filtersize_option->_value = &filterSize;
 
 	sampleArgs->AddOption(filtersize_option);
 	delete filtersize_option;
