@@ -372,6 +372,56 @@ int CNNBench::InitChessBoard()
 	CHECK_ERROR(status, SDK_SUCCESS, "Failed to unmap device buffer.(dataBuf4)");
 
 
+	status = mapBuffer(dataBuf5, pdata5, sizeof(cl_uint) * width * height,
+		CL_MAP_WRITE_INVALIDATE_REGION);
+	CHECK_ERROR(status, SDK_SUCCESS, "Failed to map device buffer.(pdata5)");
+	//chess board
+	blockSize = 64;
+	for (int j = 0; j < height; j++)
+	{
+		for (int i = 0; i < width; i++)
+		{
+			float v = 0;
+			if (((j / blockSize) % 2) == 0)  //odd row
+			{
+				v = 1 - (i / blockSize) % 2;
+			}
+			else  //even row
+			{
+				v = (i / blockSize) % 2;
+			}
+			pdata5[j * width + i] = 0;
+		}
+	}
+
+	status = unmapBuffer(dataBuf5, pdata5);
+	CHECK_ERROR(status, SDK_SUCCESS, "Failed to unmap device buffer.(pdata5)");
+
+	status = mapBuffer(dataBuf6, pdata6, sizeof(cl_uint) * width * height,
+		CL_MAP_WRITE_INVALIDATE_REGION);
+	CHECK_ERROR(status, SDK_SUCCESS, "Failed to map device buffer.(pdata6)");
+	//chess board
+	blockSize = 64;
+	for (int j = 0; j < height; j++)
+	{
+		for (int i = 0; i < width; i++)
+		{
+			float v = 0;
+			if (((j / blockSize) % 2) == 0)  //odd row
+			{
+				v = 1 - (i / blockSize) % 2;
+			}
+			else  //even row
+			{
+				v = (i / blockSize) % 2;
+			}
+			pdata6[j * width + i] = 0;
+		}
+	}
+
+	status = unmapBuffer(dataBuf6, pdata6);
+	CHECK_ERROR(status, SDK_SUCCESS, "Failed to unmap device buffer.(pdata6)");
+
 	return SDK_SUCCESS;
 }
 
@@ -779,6 +829,7 @@ int CNNBench::run()
 	sampleTimer->startTimer(timer);
 	for (int j = 0; j < iterations; j++)
 	{
+		cl_event endrEvt1;
 		status = clEnqueueNDRangeKernel(
 			commandQueue,
 			kernel,
@@ -788,13 +839,13 @@ int CNNBench::run()
 			localThreads,
 			0,
 			NULL,
-			&endrEvt);
+			&endrEvt1);
 		CHECK_OPENCL_ERROR(status, "clEnqueueNDRangeKernel failed.");
 
 		status = clFlush(commandQueue);
 		CHECK_OPENCL_ERROR(status, "clFlush failed.");
 
-		status = waitForEventAndRelease(&endrEvt);
+		status = waitForEventAndRelease(&endrEvt1);
 		CHECK_ERROR(status, SDK_SUCCESS, "WaitForEventAndRelease(ndrEvt1) Failed");
 	}
 
@@ -877,7 +928,7 @@ int CNNBench::cleanup()
 int
 main(int argc, char * argv[]) {
 
-	// Example command lineL: -dim 1 -lx 64 -ly 1 -gx 4194304 -gy 1 -f 3 -c1 2048 -c2 3 
+	// Example command lineL: -dim 1 -lx 64 -ly 1 -gx 4194304 -gy 1 -f 3 -c1 2048 -c2 3 -i 1
 	// 2048x2048 image, 1D , 64 threads, 
 	//          2048x2048 = 4194304
 	//          force localthread_y =1,  globalthread_y =1
